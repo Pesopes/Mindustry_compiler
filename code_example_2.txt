@@ -1,0 +1,17 @@
+﻿
+if (loop > 360)
+{
+	loop = 0;
+	loopcount = loopcount + 1;
+	r = r - loopcount;
+	loop = loop + 1;
+}
+
+x = op.sin(loop);
+x = x * r;
+x = x + 40;
+y = op.cos(loop);
+y = y * r;
+y = y + 40;
+draw.rect(x, y, 2, 2);
+draw.flush();

@@ -1,0 +1,54 @@
+﻿jump 3 greaterThan loopcount 0
+set r 40
+set loopcount 0
+jump 7 lessThan loop 360
+set loop 0
+op add loopcount loopcount 1
+op sub r r loopcount
+op add loop loop 1
+op sin x loop b
+op mul x x r
+op add x x 40
+op cos y loop b
+op mul y y r
+op add y y 40
+draw rect x y 2 2 0 0
+drawflush display1
+print r
+printflush message1
+
+
+if (loopcount <= 0)
+{
+	r = 40;
+	loopcount = 0;
+}
+//this is a comment
+if (loop > 360)
+{
+	loop = 0;
+	loopcount = loopcount + 1;
+	r = r - loopcount;
+	loop = loop + 1;
+}
+
+x = op.sin(loop);
+x = x * r;
+x = x + 40;
+y = op.cos(loop);
+y = y * r;
+y = y + 40;
+draw.rect(x, y, 2, 2);
+draw.flush();
+print(r);
+print.flush();
+
+
+jump -1 greaterThanEq x false
+jump 0 notEqual x false
+jump 0 equal x false
+jump 0 strictEqual x false
+jump 0 always x false
+jump 0 lessThan x false
+jump 0 lessThanEq x false
+jump 0 greaterThan x false
