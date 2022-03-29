@@ -25,7 +25,7 @@ function convertAST(ast){
         }else if (el.type == "ExpressionStatement" && el.expression.type == "AssignmentExpression") {
             result += `op ${getOperator(el.expression.right.operator)} ${el.expression.left.name} ${getVal(el.expression.right.left)} ${getVal(el.expression.right.right)}\n`;
         }else if (el.type == "ExpressionStatement" && el.expression.type == "CallExpression"){
-            result += handleFunctions(el.expression)
+            result += handleCalls(el.expression)
         }else if (el.type == "IfStatement"){
             //TODO: podminky udelat opacne
             result += `jump ${line + lenOfAST(el.consequent)} ${getConditionalOperator(el.test.operator)} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
@@ -65,7 +65,7 @@ function getConditionalOperator(symbol){
     return result[1]
 }
 
-function handleFunctions(fun){
+function handleCalls(fun){
     let args = ""
     let funName = fun.callee.name;
     fun.arguments.forEach(el => {
