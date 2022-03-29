@@ -23,15 +23,22 @@ function convertAST(ast){
     let result = "";
     ast.body.forEach(el => {
         line++;
+        //let i = 5
         if (el.type == "VariableDeclaration") {
             result += `set ${el.declarations[0].id.name} ${el.declarations[0].init.raw}\n`;
-        }else if (el.type == "ExpressionStatement" && el.expression.type == "AssignmentExpression") {
-            result += `op ${getOperator(el.expression.right.operator)} ${el.expression.left.name} ${getVal(el.expression.right.left)} ${getVal(el.expression.right.right)}\n`;
-        }else if (el.type == "ExpressionStatement" && el.expression.type == "CallExpression"){
+        }
+        //i = 5 + foo
+        else if (el.type == "ExpressionStatement" && el.expression.type == "AssignmentExpression") {
+            result += `op ${getOperator(el.expression.right.operator,operatorsTable)} ${el.expression.left.name} ${getVal(el.expression.right.left)} ${getVal(el.expression.right.right)}\n`;
+        }
+        //draw(idk something)
+        else if (el.type == "ExpressionStatement" && el.expression.type == "CallExpression"){
             result += handleCalls(el.expression)
-        }else if (el.type == "IfStatement"){
+        }
+        //if (cond) { buhr}
+        else if (el.type == "IfStatement"){
             //TODO: podminky udelat opacne
-            result += `jump ${line + lenOfAST(el.consequent)} ${getConditionalOperator(el.test.operator)} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
+            result += `jump ${line + lenOfAST(el.consequent)} ${getOperator(el.test.operator,conditionalOperatorsTable)} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
             result += convertAST(el.consequent)
         }
     });
@@ -59,16 +66,16 @@ function lenOfAST(ast){
 }
 
 //TODO: merge functions, generalise
-function getOperator(symbol){
+function getOperator(symbol,table){
     //e.g. * => mul
-    const result = operatorsTable.find(el => el[0] == symbol);
+    const result = table.find(el => el[0] == symbol);
     return result[1]
-}
+}/*
 function getConditionalOperator(symbol){
     //e.g. < => lessThan
     const result = conditionalOperatorsTable.find(el => el[0] == symbol);
     return result[1]
-}
+}*/
 
 //Converts calls into lines of masm
 function handleCalls(fun){
