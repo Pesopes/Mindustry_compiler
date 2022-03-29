@@ -1,3 +1,7 @@
+function gEl(id){
+    return document.getElementById(id);
+}
+
 function getCode(){
     return document.getElementById("input").value;
 }
@@ -7,7 +11,7 @@ function run(){
     let rawCode = getCode();
     c = esprima.parse(rawCode);
     line = 1;
-
+    gEl("output").value = convertAST(c);
     return convertAST(c)
 }
 
