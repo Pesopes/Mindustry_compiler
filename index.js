@@ -6,6 +6,8 @@ function getCode(){
     return document.getElementById("input").value;
 }
 
+//Clicking run button
+//Gets code and converts it 
 let line = 1;
 function run(){
     let rawCode = getCode();
@@ -15,7 +17,8 @@ function run(){
     return convertAST(c)
 }
 
-
+//Main converting
+//Loops trough each command and converts it
 function convertAST(ast){
     let result = "";
     ast.body.forEach(el => {
@@ -35,11 +38,12 @@ function convertAST(ast){
     return result
 }
 
+//Parses code trough esprima
 function getAST(){
     return esprima.parse(getCode())
 }
 
-//ooh recursive
+//Returns length of code even in nested, ooh recursive
 function lenOfAST(ast){
     let count = 0;
     ast.body.forEach(el => {
@@ -54,6 +58,7 @@ function lenOfAST(ast){
     return count;
 }
 
+//TODO: merge functions, generalise
 function getOperator(symbol){
     //e.g. * => mul
     const result = operatorsTable.find(el => el[0] == symbol);
@@ -65,6 +70,7 @@ function getConditionalOperator(symbol){
     return result[1]
 }
 
+//Converts calls into lines of masm
 function handleCalls(fun){
     let args = ""
     let funName = fun.callee.name;
@@ -75,6 +81,7 @@ function handleCalls(fun){
     return `${funName} ${args}\n`;
 }
 
+//Gets name or number depending on type
 function getVal(obj){
     if (obj.type == "Identifier") {
         return obj.name;
