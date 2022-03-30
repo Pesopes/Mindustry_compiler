@@ -10,3 +10,9 @@ if(i<=20){
     print(noup)
 }
     printflush(message1)
+
+
+jump 5 equal initVariableName null
+set initVariableName true
+let dkaskdas = 555
+let kdasdjkalsjdkasjdakdjaklsdj = 5
