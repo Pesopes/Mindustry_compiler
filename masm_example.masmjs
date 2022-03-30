@@ -1,0 +1,12 @@
+if(firstStart == null){
+    let firstStart = true
+    let i = 1000
+}
+i = i-1
+if(i>20){
+    print(i)
+}
+if(i<=20){
+    print(noup)
+}
+    printflush(message1)

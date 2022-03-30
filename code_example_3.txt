@@ -1,0 +1,53 @@
+set DAY 43200
+set MIN 3600
+set SEC 60
+set CENTRE 40
+set HOURLENGTH 23
+set MINLENGTH 30
+set SECLENGTH 35
+op div unix @time 1000
+op floor unix unix b
+op add unix unix 7200
+op mod hour unix DAY
+op div hourRatio hour DAY
+op mul hourDeg hourRatio 360
+op sin hourX hourDeg b
+op cos hourY hourDeg b
+op mul hourX hourX HOURLENGTH
+op mul hourY hourY HOURLENGTH
+op add hourX hourX CENTRE
+op add hourY hourY CENTRE
+op mod min unix MIN
+op div minRatio min MIN
+op mul minDeg minRatio 360
+op sin minX minDeg b
+op cos minY minDeg b
+op mul minX minX MINLENGTH
+op mul minY minY MINLENGTH
+op add minX minX CENTRE
+op add minY minY CENTRE
+op mod sec unix SEC
+op div secRatio sec SEC
+op mul secDeg secRatio 360
+op sin secX secDeg b
+op cos secY secDeg b
+op mul secX secX SECLENGTH
+op mul secY secY SECLENGTH
+op add secX secX CENTRE
+op add secY secY CENTRE
+print hour
+printflush message1
+draw stroke 3 0 0 0 0 0
+draw linePoly CENTRE CENTRE 60 CENTRE 0 0
+draw color 255 255 255 255 0 0
+draw stroke 3 0 0 0 0 0
+draw line CENTRE CENTRE hourX hourY 0 0
+draw color 200 200 200 255 0 0
+draw stroke 2 0 0 0 0 0
+draw line CENTRE CENTRE minX minY 0 0
+draw color 170 170 170 200 0 0
+draw stroke 1 0 0 0 0 0
+draw line CENTRE CENTRE secX secY 0 0
+drawflush display1
+draw color 255 255 255 255 0 0
+draw clear 0 0 0 0 0 0

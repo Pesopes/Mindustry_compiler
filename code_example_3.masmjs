@@ -1,0 +1,54 @@
+let DAY = 43200
+let MIN = 3600
+let SEC = 60
+let CENTRE = 40
+let HOURLENGTH = 23
+let MINLENGTH = 30
+let SECLENGTH = 35
+
+unix = $time / 1000
+floor(unix, unix)
+unix = unix + 7200
+hour = unix % DAY
+hourRatio = hour / DAY
+hourDeg = hourRatio * 360
+sin(hourX, hourDeg)
+cos(hourY, hourDeg)
+hourX = hourX * HOURLENGTH
+hourY = hourY * HOURLENGTH
+hourX = hourX + CENTRE
+hourY = hourY + CENTRE
+min = unix % MIN
+minRatio = min / MIN
+minDeg = minRatio * 360
+sin(minX, minDeg)
+cos(minY, minDeg)
+minX = minX * MINLENGTH
+minY = minY * MINLENGTH
+minX = minX + CENTRE
+minY = minY + CENTRE
+sec = unix % SEC
+secRatio = sec / SEC
+secDeg = secRatio * 360
+sin(secX,secDeg)
+cos(secY,secDeg)
+secX = secX * SECLENGTH
+secY = secY * SECLENGTH
+secX = secX + CENTRE
+secY = secY + CENTRE
+print(hour)
+printflush(message1)
+draw (stroke, 3, 0, 0, 0 ,0 ,0)
+draw (linePoly, CENTRE, CENTRE, 60, CENTRE ,0 ,0)
+draw (color, 255, 255, 255, 255 ,0 ,0)
+draw (stroke, 3, 0, 0, 0,0 ,0)
+draw (line, CENTRE, CENTRE, hourX, hourY ,0 ,0)
+draw (color ,200 ,200 ,200 ,255 ,0 ,0)
+draw (stroke, 2, 0, 0, 0, 0 ,0)
+draw (line, CENTRE, CENTRE, minX, minY ,0 ,0)
+draw (color, 170, 170, 170, 200 ,0 ,0)
+draw (stroke, 1, 0, 0, 0,0 ,0)
+draw (line, CENTRE, CENTRE ,secX, secY ,0 ,0)
+drawflush (display1)
+draw (color, 255, 255, 255, 255 ,0 ,0)
+draw (clear, 0, 0, 0, 0 ,0 ,0)

@@ -9,8 +9,10 @@
     <p>Will this work? (no)</p>
     <textarea id="input"></textarea>
     <button onclick="run()" >RUN</button>
+    
     <br>
-    <textarea id="output"></textarea>
+    <textarea id="output" placeholder="output" readonly="" spellcheck="false"></textarea>
+    <button onclick="copyText('output')" >COPY OUTPUT</button>
 
     
     <script src="https://unpkg.com/esprima@~4.0/dist/esprima.js"></script>

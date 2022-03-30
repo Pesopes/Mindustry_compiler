@@ -6,15 +6,31 @@ function getCode(){
     return document.getElementById("input").value;
 }
 
+function copyText(id){
+    let text = gEl(id)
+    text.select()
+    navigator.clipboard.writeText(text.value)
+}
+
+
+
 //Clicking run button
 //Gets code and converts it 
 let line = 1;
 function run(){
     let rawCode = getCode();
-    c = esprima.parse(rawCode);
+    let c = esprima.parse(rawCode);
     line = 1;
-    gEl("output").value = convertAST(c);
-    return convertAST(c)
+    //you can see where in the input it failed
+    let out = "ERROR"
+    try {
+        out = convertAST(c)
+    } catch (error) {
+       console.log("line: "+ line+" err: " + error) 
+    }
+
+    gEl("output").value = out;
+    return out
 }
 
 //Main converting
@@ -24,6 +40,8 @@ function convertAST(ast){
     ast.body.forEach(el => {
         line++;
         //let i = 5
+        //TODO: you have to always type "let" if you are assigning a value to a variable (maybe get rid of the let entirely like python)
+        //OKAY I KNOW let will be made at the top and fire only once
         if (el.type == "VariableDeclaration") {
             result += `set ${el.declarations[0].id.name} ${el.declarations[0].init.raw}\n`;
         }
@@ -36,11 +54,16 @@ function convertAST(ast){
             result += handleCalls(el.expression)
         }
         //if (cond) { buhr}
+        //TODO: add else ifs, while loops
         else if (el.type == "IfStatement"){
-            //TODO: podminky udelat opacne
-            result += `jump ${line + lenOfAST(el.consequent)} ${getOperator(el.test.operator,conditionalOperatorsTable)} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
+            if (el.test.type == "BinaryExpression") {
+                result += `jump ${line + lenOfAST(el.consequent)-1} ${getOppositeCondition(getOperator(getVal(el.test),conditionalOperatorsTable))} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
+            }else if (el.test.type == "Literal"){
+                result += `jump ${line + lenOfAST(el.consequent)-1} ${getOperator(getVal(el.test),conditionalOperatorsTable)}\n`;
+            }
             result += convertAST(el.consequent)
         }
+        //TODO: add functions (some var at top so you can get back, all functions at top with an always jump at start)
     });
     return result
 }
@@ -65,34 +88,43 @@ function lenOfAST(ast){
     return count;
 }
 
-//TODO: merge functions, generalise
+//gets operator from table in consts.js
 function getOperator(symbol,table){
     //e.g. * => mul
     const result = table.find(el => el[0] == symbol);
     return result[1]
-}/*
-function getConditionalOperator(symbol){
-    //e.g. < => lessThan
-    const result = conditionalOperatorsTable.find(el => el[0] == symbol);
+}
+
+function getOppositeCondition(symbol){
+    //e.g. equal => notEqual
+    const result = oppositeConditionsTable.find(el => el[0] == symbol);
     return result[1]
-}*/
+}
 
 //Converts calls into lines of masm
 function handleCalls(fun){
     let args = ""
-    let funName = fun.callee.name;
+    const funName = fun.callee.name;
     fun.arguments.forEach(el => {
         args += getVal(el) + " "
     });
-    //console.log(`${funName} ${args}\n`)
-    return `${funName} ${args}\n`;
+    //TODO: these special calls(sin) will be written as "foo = sin(2)"
+    const result = operatorsTable.find(el => el[1] == funName);
+    if (result != null) {
+        return `op ${funName} ${args}\n`;
+    }else{
+        return `${funName} ${args}\n`;
+    }
 }
 
 //Gets name or number depending on type
 function getVal(obj){
     if (obj.type == "Identifier") {
-        return obj.name;
+        //you cant have @ in var name so you use $ instead
+        return obj.name.replace("$","@");
     } else if (obj.type == "Literal") {
         return obj.raw;
+    }else if (obj.type == "BinaryExpression") {
+        return obj.operator;
     }
 }

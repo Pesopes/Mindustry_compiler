@@ -14,6 +14,8 @@ const operatorsTable = [
     [">","greaterThan"],
     [">=","greaterThanEq"],
     ["===","strictEqual"],
+
+    //these are special functions
     ["-","land"],
     ["-","shl"],
     ["-","shr"],
@@ -48,5 +50,17 @@ const conditionalOperatorsTable = [
     [">","greaterThan"],
     [">=","greaterThanEq"],
     ["===","strictEqual"],
-    ["true","always"]
+    ["false","always"]
+]
+
+const oppositeConditionsTable = [
+    ["equal","notEqual"],
+    ["notEqual","equal"],
+    ["greaterThanEq","lessThan"],
+    ["greaterThan","lessThanEq"],
+    ["lessThanEq","greaterThan"],
+    ["lessThan","greaterThanEq"],
+    ["notEqual","strictEqual"],
+    //dont know what to do with this
+    ["always","always"]
 ]
