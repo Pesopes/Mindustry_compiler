@@ -11,8 +11,12 @@ if(i<=20){
 }
     printflush(message1)
 
+let l = 4
+for(c=0;c<10;c=c+1){
+    cos(l,c)
+}
 
-jump 5 equal initVariableName null
-set initVariableName true
-let dkaskdas = 555
-let kdasdjkalsjdkasjdakdjaklsdj = 5
+set c 0
+cos bla
+c++
+jump -2
