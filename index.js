@@ -1,3 +1,6 @@
+//bugs(maybe) 
+//you can change some value in if and then the else can be wrong
+
 function gEl(id){
     return document.getElementById(id);
 }
@@ -44,39 +47,7 @@ function convertAST(ast, firstCall = false){
         //console.log(line)
     }
     ast.body.forEach(el => {
-        line++;
-
-        //i = 5 + foo
-        if (el.type == "ExpressionStatement" && el.expression.type == "AssignmentExpression") {
-            if (el.expression.right.type == "BinaryExpression") {
-                result += `op ${getOperator(el.expression.right.operator,operatorsTable)} ${el.expression.left.name} ${getVal(el.expression.right.left)} ${getVal(el.expression.right.right)}\n`;
-            }else{
-                result += `set ${getVal(el.expression.left)} ${getVal(el.expression.right)}\n`;
-            }
-        }
-        //draw(idk something)
-        else if (el.type == "ExpressionStatement" && el.expression.type == "CallExpression"){
-            result += handleCalls(el.expression)
-        }
-        //if (cond) { buhr}
-        //TODO: add else ifs, while loops
-        else if (el.type == "IfStatement"){
-            if (el.test.type == "BinaryExpression") {
-                result += `jump ${line + lenOfAST(el.consequent)-2} ${getOppositeCondition(getOperator(getVal(el.test),conditionalOperatorsTable))} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
-            }else if (el.test.type == "Literal"){
-                result += `jump ${line + lenOfAST(el.consequent)-2} ${getOperator(getVal(el.test),conditionalOperatorsTable)}\n`;
-            }
-            result += convertAST(el.consequent)
-            if (el.alternate != null) {
-
-                if (el.test.type == "BinaryExpression") {
-                    result += `jump ${line + lenOfAST(el.alternate)-1} ${getOperator(getVal(el.test),conditionalOperatorsTable)} ${getVal(el.test.left)} ${getVal(el.test.right)}\n`;
-                }else if (el.test.type == "Literal"){
-                    result += `jump ${line + lenOfAST(el.alternate)-1} ${getOperator(getVal(el.test),conditionalOperatorsTable)}\n`;
-                }
-                result += convertAST(el.alternate)
-            }
-        }
+        result += convertCommand(el)
         //TODO: add functions (some var at top so you can get back, all functions at top with an always jump at start)
     });
     if (firstCall) {
@@ -110,11 +81,13 @@ function firstConversion(ast){
 function lastConversion(){
     let result = "";
     if (startingLine == 0) {
-        return result
+        result +=`end`;
+    }else{
+        result +=`jump ${startingLine} always\n`;
     }
-    result +=`jump ${startingLine} always\n`;
     return result;
 }
+
 
 //Parses code trough esprima
 function getAST(){
@@ -138,8 +111,8 @@ function lenOfAST(ast){
             count++
         }
     });
-    console.log(ast)
-    console.log("count:" +count + "\n")
+    //console.log(ast)
+    //console.log("count:" +count + "\n")
 
     return count;
 }

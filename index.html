@@ -7,16 +7,17 @@
 </head>
 <body>
     <p>Will this work? (maybe)</p>
-    <textarea id="input"></textarea>
-    <button onclick="run()" >RUN</button>
+    <textarea id="input" style="width: 588px; height: 300px;"></textarea>
+    <button onclick="run()">RUN</button>
     
     <br>
-    <textarea id="output" placeholder="output" readonly="" spellcheck="false"></textarea>
+    <textarea id="output" placeholder="output" readonly="" spellcheck="false" style="width: 300px; height: 300px;"></textarea>
     <button onclick="copyText('output')" >COPY OUTPUT</button>
 
     
     <script src="https://unpkg.com/esprima@~4.0/dist/esprima.js"></script>
     <script src="consts.js"></script>
+    <script src="convertCommand.js"></script>
     <script src="index.js"></script>
 </body>
 </html>
